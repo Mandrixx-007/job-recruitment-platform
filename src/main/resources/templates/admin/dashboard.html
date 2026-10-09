@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Dashboard — JobHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+</head>
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container py-4">
+    <h2 class="fw-bold mb-1">Admin Dashboard</h2>
+    <p class="text-muted small">Welcome, <span th:text="${email}">admin</span></p>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <p class="text-muted small mb-1">Total Users</p>
+                <h3 class="fw-bold mb-0" th:text="${totalUsers} ?: 0">0</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <p class="text-muted small mb-1">Job Seekers</p>
+                <h3 class="fw-bold mb-0 text-primary" th:text="${jobSeekers} ?: 0">0</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <p class="text-muted small mb-1">Employers</p>
+                <h3 class="fw-bold mb-0 text-success" th:text="${employers} ?: 0">0</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+                <p class="text-muted small mb-1">Companies</p>
+                <h3 class="fw-bold mb-0" th:text="${totalCompanies} ?: 0">0</h3>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-3">
+                <p class="text-muted small mb-1">Active Jobs</p>
+                <h3 class="fw-bold mb-0" th:text="${totalJobs} ?: 0">0</h3>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-3">
+                <p class="text-muted small mb-1">Applications</p>
+                <h3 class="fw-bold mb-0" th:text="${totalApplications} ?: 0">0</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Quick Actions</h5>
+            <a th:href="@{/admin/users}" class="btn btn-primary me-2">
+                <i class="bi bi-people"></i> Manage Users
+            </a>
+            <a th:href="@{/admin/jobs}" class="btn btn-outline-primary">
+                <i class="bi bi-briefcase"></i> Moderate Jobs
+            </a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

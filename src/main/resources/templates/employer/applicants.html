@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Applicants — JobHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container py-4">
+    <a th:href="@{/employer/jobs}" class="btn btn-outline-secondary btn-sm mb-2">← Back to My Jobs</a>
+
+    <h3 class="fw-bold mb-1">Applicants for <span th:text="${job.title}">Job</span></h3>
+    <p class="text-muted small mb-3"><span th:text="${#lists.size(applications)}">0</span> application(s)</p>
+
+    <div th:if="${successMessage}" class="alert alert-success py-2 small" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger py-2 small" th:text="${errorMessage}"></div>
+
+    <div th:if="${#lists.isEmpty(applications)}" class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-people fs-1 text-muted"></i>
+            <p class="text-muted mt-2 mb-0">No applications yet.</p>
+        </div>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(applications)}" class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th>Applicant</th>
+                    <th>CV</th>
+                    <th>Applied</th>
+                    <th>Status</th>
+                    <th class="text-end">Update</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="app : ${applications}">
+                    <td class="fw-semibold" th:text="${app.applicant.user.fullName}">Name</td>
+                    <td>
+                        <a th:href="${app.cvUrl}" target="_blank" class="btn btn-sm btn-outline-primary"
+                           th:if="${app.cvUrl != null}">View CV</a>
+                        <span th:if="${app.cvUrl == null}" class="text-muted small">-</span>
+                    </td>
+                    <td th:text="${#temporals.format(app.appliedAt, 'yyyy-MM-dd')}">Date</td>
+                    <td>
+                        <span class="badge bg-secondary" th:text="${app.status}">PENDING</span>
+                    </td>
+                    <td class="text-end">
+                        <form th:action="@{'/employer/applications/' + ${app.id} + '/status'}" method="post" class="d-flex gap-1 justify-content-end mb-1">
+                            <input type="hidden" name="jobId" th:value="${job.id}"/>
+                            <select name="status" class="form-select form-select-sm" style="width:auto;">
+                                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"
+                                        th:selected="${s == app.status}">STATUS</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                        </form>
+                        <a th:href="@{'/employer/applications/' + ${app.id} + '/interview?jobId=' + ${job.id}}"
+                           class="btn btn-sm btn-warning">
+                            <i class="bi bi-calendar-plus"></i> Interview
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
